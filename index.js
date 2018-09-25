@@ -36,6 +36,9 @@ let urls = [{name: "Атб - Економія",
 bot.on('message', msg=>{
     if (msg.text == "/start") {
         bot.sendMessage(msg.chat.id, "Hello", replyKeyBoard(urls))
+    } else if (msg.text == "parse") {
+        console.log("Parse")
+        parse()
     } else {
         if (!isExist(msg.chat.id)) {
             increaseUnique()
@@ -108,14 +111,17 @@ function inlineKeyboard(id) {
 //Parser code
 //
 
-refreshDataBase()
-urls.map((cur, i)=>{
-    let shares = parser(cur.url)
-    setTimeout(()=>{
-        console.log("parser")
-        pushShare(cur.name, shares)
-    }, 6000)
-})
+function parse() {
+    refreshDataBase()
+    urls.map((cur, i)=>{
+        let shares = parser(cur.url)
+        setTimeout(()=>{
+            console.log("parser")
+            pushShare(cur.name, shares)
+        }, 6000)
+    })
+}
+
 
 function getPage(name, page) {
     let shares = db.get("shares").find({name: name}).value()
